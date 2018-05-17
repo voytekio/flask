@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block main_block %}
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+
+                <article>
+                    <header>
+                        <h1>Welcome to flask VC project</h1>
+                        <p> Chose sub-section on the right.</p>
+                    </header>
+                    <section>
+                        <h2>article section h2</h2>
+                        <p><a href="{{ url_for('static', filename='css/main.css') }}">static</a></p>
+                        <p><a href="{{ url_for('salt') }}">Salt</a></p>
+                    </section>
+                    <section>
+                        <h2>article section h2</h2>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </section>
+                    <footer>
+                        <h3>article footer h3</h3>
+                        <p>Lorem ipsum dolor sit amet.</p>
+                    </footer>
+                </article>
+
+                <aside>
+                    <h3>aside</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                </aside>
+
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+{% endblock %}
