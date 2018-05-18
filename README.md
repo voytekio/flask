@@ -1,2 +1,2 @@
 # flask
-flask related
+Simple project to test out the Flask framework.
