@@ -36,15 +36,23 @@ def chef():
     return render_template('chef.html')
 
 @app.route('/weather')
-def weather():
-    # lots of repetition here, need to refactor
-    api_header = config_dict.get('weather',{}).get('api_header','missing_api_header')
-    cityname = config_dict.get('weather',{}).get('cityname','missing_city_name')
-    unit = config_dict.get('weather',{}).get('unit','missing_unit')
-    weather_api_key = config_dict.get('secs',{}).get('openweather_api_key','missing_api_key')
-    full_api_url = api_header + cityname + '&mode=json&units=' + unit + '&APPID=' + weather_api_key 
-    print('URL: {0}'.format(full_api_url))
-    req_result = requests.get(full_api_url)
+def weather(force_result = None, force_city_name = None):
+    #print('force_res: {0}, f_city: {1}'.format(force_result.status_code, force_city_name))
+    if force_result:
+        #config_dict = {}
+        cityname = force_city_name
+    else:
+        # lots of repetition here, need to refactor
+        api_header = config_dict.get('weather',{}).get('api_header','missing_api_header')
+        cityname = config_dict.get('weather',{}).get('cityname','missing_city_name')
+        unit = config_dict.get('weather',{}).get('unit','missing_unit')
+        weather_api_key = config_dict.get('secs',{}).get('openweather_api_key','missing_api_key')
+        full_api_url = api_header + cityname + '&mode=json&units=' + unit + '&APPID=' + weather_api_key 
+        print('URL: {0}'.format(full_api_url))
+    if force_result:
+        req_result = force_result
+    else:
+        req_result = requests.get(full_api_url)
     if req_result.status_code == 200:
         weather_result = req_result.json().get('main',{}).get('temp','temperature-error')
         weather_result = cityname + ': ' + str(weather_result)
@@ -53,7 +61,10 @@ def weather():
         error_text = req_result.text
         weather_result = 'error: ' + error_text
     #print('weather: {0}'.format(weather_result))
-    return render_template('weather.html', weather_result = weather_result)
+    if force_result:
+        return weather_result
+    else:
+        return render_template('weather.html', weather_result = weather_result)
 
 @app.route('/vcenter')
 def vcenter():
