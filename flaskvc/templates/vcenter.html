@@ -8,11 +8,15 @@
                     <header>
                         <h1>vCenter page</h1>
                         <p> Listing all VMs:</p>
-                        <p> {{ vms_as_string }} </p>
+                        <ol>
+                            {% for one_vm in vms_as_list %}
+                            <li>{{ one_vm }}</li>
+                            {% endfor %}
+                        </ol>
                     </header>
                     <section>
-                        <h2>article section h2</h2>
-                        <p>Coming soon.</p>
+                        <h2>VM list as one string:</h2>
+                        <p> {{ vms_as_string }} </p>
                     </section>
                 </article>
 

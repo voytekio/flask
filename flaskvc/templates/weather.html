@@ -8,11 +8,16 @@
                     <header>
                         <h1>Weather page</h1>
                         <p> Listing weather info:</p>
-                        <p> {{ weather_result }} </p>
+                        <ul>
+                        {% for one_key,one_val in weather_result.iteritems() %}
+                            {# <!-- <li>{{one_line.key}}: {{one_line.value}}</li> --> #}
+                            <li>{{one_key}}: {{one_val}}</li>
+                        {% endfor %}
+                        </ul>
                     </header>
                     <section>
-                        <h2>article section h2</h2>
-                        <p>Coming soon.</p>
+                        <h2>Weather data as one variable:</h2>
+                        <p> {{ weather_result }} </p>
                     </section>
                 </article>
 

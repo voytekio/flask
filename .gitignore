@@ -4,4 +4,4 @@ dist
 flask_vc_project.egg-info/
 *.pyc
 __pycache__
-flaskproject.cfg
+flaskproject.sec
