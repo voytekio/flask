@@ -63,28 +63,38 @@ def get_all_vms(si):
             vmstring = vmstring + ", " + onevm 
         else:
             vmstring += onevm
-    return vmstring
 
-def connect(args, config_dict):
+    vm_return = {}
+    vm_return['vms_as_string'] = vmstring
+    vm_return['vms_as_list'] = vmarray
+
+    return vm_return
+
+def connect(args, config_dict, sec_dict):
     """
     Simple command-line program for listing the virtual machines on a host.
     """
-    #print('sec_dict is: {0}'.format(sec_dict))
-    pwd = config_dict.get('secs',{}).get('vc_pass', args.password)
+    host = sec_dict.get('vc_config',{}).get('vc_hostname', args.host)
+    user = sec_dict.get('vc_config',{}).get('vc_username', args.user)
+    pwd = sec_dict.get('secs',{}).get('vc_pass', args.password)
     if not pwd:
         pwdprompt = "Password for "+args.user+"\n"
         pwd = getpass.getpass(prompt=pwdprompt)
 
     si = None
     try:
-        si = SmartConnectNoSSL(host=args.host,
-                               user=args.user,
+        si = SmartConnectNoSSL(host=host,
+                               user=user,
                                pwd=pwd,
-                               port=int(args.port))
+                               port=443) #int(args.port))
         atexit.register(Disconnect, si)
+    except AttributeError:
+        raise SystemExit("Must specify host, user and pwd")
+        return
+
     except vim.fault.InvalidLogin:
         raise SystemExit("Unable to connect to host "
                          "with supplied credentials.")
-
+        return
     return si
 
