@@ -5,3 +5,4 @@ flask_vc_project.egg-info/
 *.pyc
 __pycache__
 flaskproject.sec
+*.swp

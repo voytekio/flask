@@ -38,9 +38,10 @@ def chef():
 @app.route('/weather')
 def weather(force_result = None, force_city_name = None):
     #print('force_res: {0}, f_city: {1}'.format(force_result.status_code, force_city_name))
+    weather_result = {}
     if force_result:
         #config_dict = {}
-        cityname = force_city_name
+        weather_result['City'] = force_city_name
     else:
         # lots of repetition here, need to refactor
         api_header = config_dict.get('weather',{}).get('api_header','missing_api_header')
@@ -50,7 +51,6 @@ def weather(force_result = None, force_city_name = None):
         full_api_url = api_header + cityname + '&mode=json&units=' + unit + '&APPID=' + weather_api_key 
         print('URL: {0}'.format(full_api_url))
 
-        weather_result = {}
         weather_result['City']  = cityname
     if force_result:
         req_result = force_result
@@ -69,7 +69,7 @@ def weather(force_result = None, force_city_name = None):
         weather_result['Humidity'] = req_result.json().get('main',{}).get('humidity','humidity-error')
     else:
         error_text = req_result.text
-        weather_result['Error'] = 'error: ' + error_text
+        weather_result['Error'] = 'error: ' + str(error_text)
     print('weather: {0}'.format(weather_result))
     if force_result:
         return weather_result
