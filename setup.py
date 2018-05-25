@@ -8,7 +8,8 @@ setup(name='flask-vc-project',
         install_requires=[
             'Flask',
             'pyvmomi',
-            'requests'
+            'requests',
+            'mock'
         ],
         license = 'BSD',
         url = 'http://github.com/vkrudysz/oneofthesedays.html',

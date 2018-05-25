@@ -4,6 +4,7 @@ import pdb
 import argparse
 import json
 import requests
+import os, sys
 
 app = Flask(__name__)
 
@@ -79,6 +80,7 @@ def weather(force_result = None, force_city_name = None):
 @app.route('/vcenter')
 def vcenter():
     import vc_libs
+    vm_return = {}
     vc_connect_object = vc_libs.connect(args, config_dict, sec_dict)
     if vc_connect_object:
         vm_return = vc_libs.get_all_vms(vc_connect_object)
