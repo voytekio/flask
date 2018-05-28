@@ -17,10 +17,11 @@ limitations under the License.
 """
 from __future__ import print_function
 import atexit
+import getpass
+
 from pyVim.connect import SmartConnectNoSSL, Disconnect
 from pyVmomi import vim
 #from tools import cli
-import getpass
 
 MAX_DEPTH = 10
 
@@ -46,6 +47,14 @@ def printvminfo(vm, vmarray, depth=1):
     vmarray.append(summary.config.name)
 
 def get_all_vms(si):
+    '''
+    Function responsible for retrieving VM info
+    Input: service_instance pyvmomi connection object
+    Output: a dictionary with two values:
+        vms_as_string - comma separated string with list of VMs
+        vms_as_list - a list with vm names as elements
+    - Note: in the future we will add ability to retrieve properties
+    '''
     content = si.RetrieveContent()
     for child in content.rootFolder.childEntity:
         if hasattr(child, 'vmFolder'):
@@ -60,7 +69,7 @@ def get_all_vms(si):
     vmstring = ""
     for onevm in vmarray:
         if vmstring:
-            vmstring = vmstring + ", " + onevm 
+            vmstring = vmstring + ", " + onevm
         else:
             vmstring += onevm
 
@@ -74,9 +83,9 @@ def connect(args, config_dict, sec_dict):
     """
     Simple command-line program for listing the virtual machines on a host.
     """
-    host = sec_dict.get('vc_config',{}).get('vc_hostname', args.host)
-    user = sec_dict.get('vc_config',{}).get('vc_username', args.user)
-    pwd = sec_dict.get('secs',{}).get('vc_pass', args.password)
+    host = sec_dict.get('vc_config', {}).get('vc_hostname', args.host)
+    user = sec_dict.get('vc_config', {}).get('vc_username', args.user)
+    pwd = sec_dict.get('secs', {}).get('vc_pass', args.password)
     if not pwd:
         pwdprompt = "Password for "+args.user+"\n"
         pwd = getpass.getpass(prompt=pwdprompt)
@@ -97,4 +106,3 @@ def connect(args, config_dict, sec_dict):
                          "with supplied credentials.")
         return
     return si
-
