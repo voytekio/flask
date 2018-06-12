@@ -6,18 +6,28 @@
 
                 <article>
                     <header>
-                        <h1>SALT SALT</h1>
-                        <p> Salty things go here.</p>
+                        <h1>SALT page.</h1>
+                        <p> Minions considered up:</p>
+                        <ol>
+                        {% for one_element in salt_minions_up %}
+                            {# <!-- <li>{{one_line.key}}: {{one_line.value}}</li> --> #}
+                            <li>{{one_element}}</li>
+                        {% endfor %}
+                        </ol>
                     </header>
                     <section>
-                        <h2>Listing Salt minions:</h2>
-                        <p>{{ vms_as_string }}.</p>
+                        <h2>Minions considered down:</h2>
+                        <ol>
+                        {% for one_element in salt_minions_down %}
+                            <li>{{one_element}}</li>
+                        {% endfor %}
+                        </ol>
                     </section>
                 </article>
 
                 <aside>
                     <h3>aside</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
+                    <p>empty for now..</p>
                 </aside>
 
             </div> <!-- #main -->

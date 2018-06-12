@@ -10,8 +10,10 @@ import pdb
 import argparse
 import json
 import requests
+import time
 
 from flask import Flask, render_template, url_for
+from salt_api_wrapper import get_rest_request, salt_api
 
 app = Flask(__name__)
 
@@ -39,7 +41,17 @@ def index():
 @app.route('/salt')
 def salt():
     'route func for /salt endpoint. Prints Salt stuff'
-    return render_template('salt.html', vms_as_string=get_minions())
+    salt_hostname = str(sec_dict.get('salt_config', {}).get('salt_hostname', 'missing_salt_hostname'))
+    salt_api_port = str(sec_dict.get('salt_config', {}).get('salt_api_port', 'missing_salt_port'))
+    salt_api_service_username  = str(sec_dict.get('salt_config', {}).get('salt_api_service_username', 'missing_salt_api_service_username'))
+    salt_api_pass = str(sec_dict.get('secs', {}).get('salt_api_service_pass', 'missing_salt_pass'))
+
+    full_server_url = 'https://'+salt_hostname+':'+salt_api_port
+    salt_object = salt_api(full_server_url, salt_api_service_username, salt_api_pass)
+    salt_minions_up = sorted(salt_object.get_minions('up'))
+    salt_minions_down = sorted(salt_object.get_minions('down'))
+
+    return render_template('salt.html', salt_minions_up=salt_minions_up, salt_minions_down=salt_minions_down)
 
 @app.route('/chef')
 def chef():
@@ -106,24 +118,6 @@ def tst(some_number):
     print('inside tst func')
     return some_number + 1
 
-def get_minions():
-    '''
-    Function to return a list of minions
-    input: n/a
-    output: string with comma separated list of VMs.
-    '''
-    #pdb.set_trace()
-    vm_names = ['MANUAL_FOR_NOW', 'minion1', 'minion2', 'minion3']
-    vmdetails = [{'name':'minion1', 'power':'on'}, {'name':'minion2', 'power':'on'}]
-    vms_as_string = ''
-    for one_vm in vm_names:
-        print(one_vm)
-        if vms_as_string:
-            vms_as_string = vms_as_string + ", " + one_vm
-        else:
-            vms_as_string = one_vm
-
-    return vms_as_string
 
 if __name__ == '__main__':
     args = setup_args()
