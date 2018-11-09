@@ -1,2 +1,2 @@
 # flask
-Simple project to try out the Flask framework.
+Simple project to try out the Flask framework
