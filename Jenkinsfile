@@ -12,19 +12,5 @@ pipeline {
                 sh 'printenv'
             }
         }
-        stage('Stage 2 - test') {
-            steps {
-                echo 'test stage - lint' 
-                echo 'unit tests'
-                echo 'integration tests'
-            }
-        } 
-        stage('Stage 2 - deploy') {
-            steps {
-                echo 'last stage!'
-                sh 'printenv > build_env.log'
-                archiveArtifacts '*.log'
-            }
-        }         
     }
 }
